@@ -1,0 +1,13 @@
+{
+  "name": "gabrandalisse-skills",
+  "owner": {
+    "name": "Gabriel Andres Brandalisse"
+  },
+  "plugins": [
+    {
+      "name": "to-hexagonal-architecture",
+      "source": "./skills/to-hexagonal-architecture",
+      "description": "Analyze an existing codebase in any language or framework and produce a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters)."
+    }
+  ]
+}
