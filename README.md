@@ -1,6 +1,6 @@
 # Skills
 
-Collection of reusable `SKILL.md` workflows compatible with Claude Code, Gemini CLI, Cursor, Antigravity, and GitHub Copilot.
+Personal collection of reusable `SKILL.md` workflows for AI coding agents (Claude Code, OpenAI Codex, Gemini CLI, Cursor, Antigravity, and GitHub Copilot).
 
 ## Available Skills
 
@@ -9,5 +9,6 @@ Collection of reusable `SKILL.md` workflows compatible with Claude Code, Gemini 
 ## Installation
 
 ### Multi-agent CLI (`skills.sh`)
+Works across Claude Code, Codex, Gemini CLI, Cursor, Antigravity, and GitHub Copilot:
 ```bash
 npx skills add gabrandalisse/skills
