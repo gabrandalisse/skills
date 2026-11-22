@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.0] - 2026-11-22
+### Changed
+- Landing page modified
+
 ## [1.2.0] - 2026-11-20
 ### Added
 - Landing page

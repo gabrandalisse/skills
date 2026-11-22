@@ -1,528 +1,1493 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gabrandalisse/skills — Reusable SKILL.md Workflows for AI Coding Agents</title>
-  <meta name="description" content="Personal collection of battle-tested SKILL.md workflows built for Claude Code, OpenAI Codex, Gemini CLI, Cursor, Antigravity, and GitHub Copilot." />
+  <title>gabrandalisse/skills — Reusable AI Agent Workflows</title>
+  <meta
+    name="description"
+    content="Personal collection of reusable SKILL.md workflows for Claude Code, OpenAI Codex, Gemini CLI, Cursor, Antigravity, and GitHub Copilot."
+  />
 
-  <!-- Fonts: Inter & JetBrains Mono -->
+  <!-- Google Fonts: Syne (Display), Poppins (Body & UI), JetBrains Mono (Code & CLI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-          },
-          colors: {
-            obsidian: '#090d16',
-            surface: '#111827',
-            surfaceLight: '#161f33',
-            borderSubtle: 'rgba(255, 255, 255, 0.08)',
-          }
-        }
-      }
-    };
-  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@300;400;500;600&family=Syne:wght@700;800&display=swap"
+    rel="stylesheet"
+  />
 
   <style>
+    /* =========================================================================
+       1. DESIGN TOKENS & WARM OBSIDIAN-VERMILION PALETTE
+    ========================================================================= */
+    :root {
+      --bg-obsidian: #0b0706;
+      --bg-surface: #140d0b;
+      --bg-elevated: #1b110e;
+      --bg-code: #0e0807;
+
+      --border-copper: rgba(255, 138, 76, 0.18);
+      --border-copper-strong: rgba(255, 138, 76, 0.38);
+
+      --text-ivory: #faf3ee;
+      --text-sand: #c2afa4;
+      --text-muted: #8f7a70;
+
+      --accent-vermilion: #ff5722;
+      --accent-crimson: #d9381e;
+      --accent-coral: #ff8a4c;
+      --accent-peach: #ffd1b3;
+
+      --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+
+      --container-max: 1140px;
+      --transition-smooth: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* =========================================================================
+       2. RESET & BASE TYPOGRAPHY
+    ========================================================================= */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-obsidian);
+      color: var(--text-ivory);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
     body {
-      background-color: #090d16;
-      color: #f8fafc;
-      background-image:
-        radial-gradient(circle at 15% 10%, rgba(16, 185, 129, 0.08), transparent 32%),
-        radial-gradient(circle at 85% 20%, rgba(56, 189, 248, 0.08), transparent 35%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-obsidian);
+      color: var(--text-ivory);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #090d16;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+    ::selection {
+      background: rgba(255, 87, 34, 0.35);
+      color: var(--text-ivory);
     }
 
-    .glass-nav {
-      background: rgba(9, 13, 22, 0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .grid-pattern {
-      background-size: 36px 36px;
-      background-image:
-        linear-gradient(to right, rgba(30, 41, 59, 0.32) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(30, 41, 59, 0.32) 1px, transparent 1px);
+    button {
+      font-family: var(--font-sans);
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+
+    code,
+    pre {
+      font-family: var(--font-mono);
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    }
+
+    /* =========================================================================
+       3. TACTILE FILM GRAIN OVERLAY & TOP SCROLL PROGRESS BAR
+    ========================================================================= */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-crimson) 0%, var(--accent-vermilion) 50%, var(--accent-coral) 100%);
+      box-shadow: 0 0 14px rgba(255, 87, 34, 0.75);
+      transform-origin: 0% 50%;
+      transform: scaleX(0);
+      z-index: 80;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    /* =========================================================================
+       4. STICKY GLASSMORPHIC NAVBAR
+    ========================================================================= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11, 7, 6, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-copper);
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4.25rem;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-ivory);
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent-vermilion), var(--accent-crimson));
+      box-shadow: 0 0 18px rgba(255, 87, 34, 0.45);
+      font-size: 0.95rem;
+    }
+
+    .brand-slash {
+      color: var(--accent-coral);
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-sand);
+      transition: color var(--transition-smooth);
+    }
+
+    .nav-link:hover {
+      color: var(--accent-coral);
+    }
+
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.05rem;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-copper);
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--text-ivory);
+      transition: all var(--transition-smooth);
+    }
+
+    .btn-github:hover {
+      border-color: var(--accent-coral);
+      background: rgba(255, 87, 34, 0.14);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================================
+       5. PARALLAX & AMBIENT LAYERS
+    ========================================================================= */
+    .parallax-layer {
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(95px);
+      pointer-events: none;
+      will-change: transform;
+      z-index: 0;
+    }
+
+    .orb-1 {
+      width: 440px;
+      height: 440px;
+      top: -110px;
+      left: -90px;
+      background: rgba(255, 87, 34, 0.18);
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      top: 90px;
+      right: -140px;
+      background: rgba(217, 56, 30, 0.14);
+    }
+
+    .orb-3 {
+      width: 340px;
+      height: 340px;
+      bottom: -40px;
+      left: 36%;
+      background: rgba(255, 138, 76, 0.1);
+    }
+
+    .kinetic-watermark {
+      position: absolute;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(3.8rem, 11vw, 9.5rem);
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 138, 76, 0.08);
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+      will-change: transform;
+      z-index: 0;
+    }
+
+    /* =========================================================================
+       6. HERO SECTION & MULTI-AGENT INSTALL TERMINAL
+    ========================================================================= */
+    .hero-section {
+      position: relative;
+      overflow: hidden;
+      padding: 4.5rem 0 5.5rem;
+      border-bottom: 1px solid var(--border-copper);
+      background-image: radial-gradient(rgba(255, 138, 76, 0.1) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    @media (min-width: 768px) {
+      .hero-section {
+        padding: 6rem 0 7rem;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.42rem 1rem;
+      border-radius: var(--radius-pill);
+      background: var(--bg-elevated);
+      border: 1px solid rgba(255, 87, 34, 0.34);
+      color: var(--accent-peach);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 8px 28px rgba(255, 87, 34, 0.14);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.35rem, 6vw, 4.35rem);
+      font-weight: 800;
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      color: var(--text-ivory);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-title-gradient {
+      display: block;
+      background: linear-gradient(95deg, var(--accent-vermilion) 0%, var(--accent-coral) 52%, var(--accent-peach) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-sans);
+      font-size: clamp(1rem, 2vw, 1.14rem);
+      font-weight: 300;
+      color: var(--text-sand);
+      max-width: 660px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    .inline-code {
+      font-family: var(--font-mono);
+      font-size: 0.86em;
+      color: var(--accent-coral);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-copper);
+      padding: 0.12rem 0.45rem;
+      border-radius: 6px;
+    }
+
+    /* Multi-Agent Install Terminal */
+    .terminal-card {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-copper);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(255, 87, 34, 0.08);
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .terminal-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.85rem 1.15rem;
+      background: var(--bg-code);
+      border-bottom: 1px solid var(--border-copper);
+    }
+
+    .window-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot-red {
+      background: var(--accent-crimson);
+    }
+
+    .dot-orange {
+      background: var(--accent-vermilion);
+    }
+
+    .dot-coral {
+      background: var(--accent-coral);
+    }
+
+    .tab-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .tab-btn {
+      padding: 0.4rem 0.78rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-sand);
+      border: 1px solid transparent;
+      transition: all var(--transition-smooth);
+    }
+
+    .tab-btn:hover {
+      color: var(--text-ivory);
+      background: rgba(255, 138, 76, 0.08);
+    }
+
+    .tab-btn.active {
+      background: rgba(255, 87, 34, 0.18);
+      color: var(--accent-peach);
+      border-color: rgba(255, 87, 34, 0.45);
+    }
+
+    .terminal-body {
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      background: linear-gradient(180deg, rgba(20, 13, 11, 0.95) 0%, rgba(14, 8, 7, 0.98) 100%);
+    }
+
+    @media (min-width: 640px) {
+      .terminal-body {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .terminal-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .terminal-hint {
+      font-size: 0.83rem;
+      color: var(--text-sand);
+      margin-bottom: 0.65rem;
+    }
+
+    .terminal-cmd {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--accent-coral);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .cmd-prompt {
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.68rem 1.2rem;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-vermilion) 0%, var(--accent-crimson) 100%);
+      color: var(--text-ivory);
+      font-size: 0.84rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(255, 87, 34, 0.3);
+      transition: all var(--transition-smooth);
+      flex-shrink: 0;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 87, 34, 0.45);
+      filter: brightness(1.06);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.68rem 1.2rem;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-copper);
+      color: var(--text-ivory);
+      font-size: 0.84rem;
+      font-weight: 500;
+      transition: all var(--transition-smooth);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-coral);
+      background: rgba(255, 138, 76, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* Ecosystem Chips Strip */
+    .ecosystem-strip {
+      position: relative;
+      z-index: 2;
+      margin-top: 2.75rem;
+      text-align: center;
+    }
+
+    .ecosystem-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .ecosystem-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.55rem;
+    }
+
+    .ecosystem-chip {
+      padding: 0.38rem 0.85rem;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-copper);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-sand);
+    }
+
+    /* =========================================================================
+       7. SECTION HEADERS & REVEAL ANIMATIONS
+    ========================================================================= */
+    .section {
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 0;
+      border-bottom: 1px solid var(--border-copper);
+    }
+
+    @media (min-width: 768px) {
+      .section {
+        padding: 6.25rem 0;
+      }
+    }
+
+    .section-alt {
+      background-color: var(--bg-code);
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-coral);
+      margin-bottom: 0.65rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      color: var(--text-ivory);
+      margin-bottom: 0.85rem;
+    }
+
+    .section-desc {
+      font-size: 0.98rem;
+      font-weight: 300;
+      color: var(--text-sand);
+      max-width: 650px;
+      line-height: 1.72;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translate3d(0, 26px, 0);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    /* =========================================================================
+       8. SKILLS CATALOG & 3D TILT + CURSOR SPOTLIGHT CARDS
+    ========================================================================= */
+    .catalog-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-pill {
+      padding: 0.48rem 1rem;
+      border-radius: var(--radius-pill);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-copper);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-sand);
+      transition: all var(--transition-smooth);
+    }
+
+    .filter-pill:hover {
+      border-color: var(--accent-coral);
+      color: var(--text-ivory);
+    }
+
+    .filter-pill.active {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.24), rgba(217, 56, 30, 0.18));
+      border-color: var(--accent-vermilion);
+      color: var(--accent-peach);
+    }
+
+    .skills-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .skills-grid {
+        grid-template-columns: 1.45fr 1fr;
+      }
+    }
+
+    /* 3D Tilt & Radial Spotlight Surface */
+    .tilt-card {
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-copper);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+      --spot-x: 50%;
+      --spot-y: 50%;
+      --spot-opacity: 0;
+    }
+
+    @media (min-width: 640px) {
+      .tilt-card {
+        padding: 2.25rem;
+      }
+    }
+
+    .tilt-card:hover {
+      border-color: var(--border-copper-strong);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.6), 0 0 36px rgba(255, 87, 34, 0.1);
+    }
+
+    .tilt-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: var(--spot-opacity);
+      transition: opacity 0.3s ease;
+      background: radial-gradient(
+        520px circle at var(--spot-x) var(--spot-y),
+        rgba(255, 138, 76, 0.14),
+        rgba(255, 87, 34, 0.04) 45%,
+        transparent 75%
+      );
+      z-index: 1;
+    }
+
+    .tilt-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .skill-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .skill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.32rem 0.72rem;
+      border-radius: var(--radius-pill);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-copper);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent-peach);
+    }
+
+    .version-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-coral);
+      background: rgba(255, 87, 34, 0.12);
+      border: 1px solid rgba(255, 87, 34, 0.3);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .skill-name {
+      font-family: var(--font-mono);
+      font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+      font-weight: 500;
+      color: var(--text-ivory);
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-summary {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--text-sand);
+      line-height: 1.72;
+      margin-bottom: 1.5rem;
+    }
+
+    .highlights-list {
+      list-style: none;
+      display: grid;
+      gap: 0.72rem;
+      margin-bottom: 2rem;
+      padding: 1.15rem;
+      border-radius: var(--radius-md);
+      background: var(--bg-code);
+      border: 1px solid rgba(255, 138, 76, 0.12);
+    }
+
+    .highlights-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.85rem;
+      color: var(--text-sand);
+      line-height: 1.55;
+    }
+
+    .highlight-bullet {
+      color: var(--accent-vermilion);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Extensible Architecture Side Card */
+    .extensible-card {
+      background: rgba(20, 13, 11, 0.62);
+      border: 1px dashed rgba(255, 138, 76, 0.3);
+    }
+
+    .extensible-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-ivory);
+      margin: 1rem 0 0.75rem;
+    }
+
+    .extensible-steps {
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    .extensible-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.85rem;
+      color: var(--text-sand);
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.45rem;
+      height: 1.45rem;
+      border-radius: 50%;
+      background: rgba(255, 87, 34, 0.18);
+      border: 1px solid rgba(255, 87, 34, 0.4);
+      color: var(--accent-coral);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* =========================================================================
+       9. REPOSITORY STRUCTURE EXPLORER
+    ========================================================================= */
+    .repo-explorer {
+      position: relative;
+      z-index: 2;
+      margin-top: 2.75rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-copper);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    @media (min-width: 900px) {
+      .repo-explorer {
+        grid-template-columns: 330px 1fr;
+      }
+    }
+
+    .repo-sidebar {
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-copper);
+      padding: 1.25rem;
+    }
+
+    @media (min-width: 900px) {
+      .repo-sidebar {
+        border-bottom: none;
+        border-right: 1px solid var(--border-copper);
+      }
+    }
+
+    .repo-sidebar-header {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      padding: 0 0.5rem 0.85rem;
+      border-bottom: 1px solid rgba(255, 138, 76, 0.12);
+      margin-bottom: 0.85rem;
+    }
+
+    .file-tree {
+      list-style: none;
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .file-btn {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.62rem 0.78rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-sand);
+      border: 1px solid transparent;
+      transition: all var(--transition-smooth);
+    }
+
+    .file-btn:hover {
+      background: rgba(255, 138, 76, 0.08);
+      color: var(--text-ivory);
+    }
+
+    .file-btn.active {
+      background: rgba(255, 87, 34, 0.16);
+      border-color: rgba(255, 87, 34, 0.42);
+      color: var(--accent-peach);
+      font-weight: 500;
+    }
+
+    .repo-viewer {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--bg-code);
+    }
+
+    .repo-viewer-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1rem 1.4rem;
+      background: rgba(20, 13, 11, 0.8);
+      border-bottom: 1px solid var(--border-copper);
+    }
+
+    .repo-file-path {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: var(--accent-coral);
+      font-weight: 500;
+    }
+
+    .repo-file-purpose {
+      padding: 0.85rem 1.4rem;
+      background: rgba(255, 87, 34, 0.06);
+      border-bottom: 1px solid rgba(255, 138, 76, 0.12);
+      font-size: 0.84rem;
+      color: var(--text-sand);
+    }
+
+    .repo-code-content {
+      padding: 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.68;
+      color: var(--text-ivory);
+      overflow-x: auto;
+      white-space: pre;
+      max-height: 410px;
+      overflow-y: auto;
+    }
+
+    /* =========================================================================
+       10. SKILL.MD INSPECTOR MODAL
+    ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(6, 3, 2, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 860px;
+      max-height: 88vh;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-copper-strong);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 87, 34, 0.18);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(14px) scale(0.98);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .modal-backdrop.open .modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1.1rem 1.5rem;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-copper);
+    }
+
+    .modal-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-ivory);
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .modal-close {
+      width: 2.15rem;
+      height: 2.15rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-code);
+      border: 1px solid var(--border-copper);
+      color: var(--text-sand);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all var(--transition-smooth);
+    }
+
+    .modal-close:hover {
+      border-color: var(--accent-vermilion);
+      color: var(--text-ivory);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      background: var(--bg-code);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--text-ivory);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* =========================================================================
+       11. FOOTER & TOAST FEEDBACK
+    ========================================================================= */
+    .footer {
+      padding: 2.75rem 0;
+      background: var(--bg-obsidian);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .footer-inner {
+        flex-direction: row;
+        text-align: left;
+      }
+    }
+
+    .footer-credit {
+      font-size: 0.85rem;
+      color: var(--text-sand);
+    }
+
+    .footer-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .footer-link {
+      color: var(--accent-coral);
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+
+    .footer-link:hover {
+      opacity: 0.82;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.72rem 1.15rem;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--accent-vermilion);
+      color: var(--text-ivory);
+      font-size: 0.84rem;
+      font-weight: 500;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================================================
+       12. ACCESSIBILITY: REDUCED MOTION
+    ========================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .parallax-layer,
+      .ambient-orb,
+      .kinetic-watermark,
+      .tilt-card {
+        transform: none !important;
+      }
+      .tilt-card::before {
+        display: none;
+      }
     }
   </style>
 </head>
-<body class="font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 min-h-screen flex flex-col">
+<body>
+  <!-- Fixed Vermilion-Orange Top Scroll Progress Bar -->
+  <div id="scroll-progress" aria-hidden="true"></div>
 
-  <!-- =========================================================
-       TOP NAVIGATION BAR
-  ========================================================== -->
-  <header class="sticky top-0 z-40 glass-nav border-b border-borderSubtle">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      <!-- Brand Logo & Version Badge -->
-      <a href="#" class="flex items-center gap-2.5 group focus:outline-none">
-        <span class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 transition">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <polyline points="4 17 10 11 4 5"></polyline>
-            <line x1="12" y1="19" x2="20" y2="19"></line>
-          </svg>
-        </span>
-        <div class="flex items-center gap-2">
-          <span class="font-mono font-semibold text-sm sm:text-base text-slate-100 tracking-tight">gabrandalisse/skills</span>
-          <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-medium bg-slate-800 text-emerald-400 border border-slate-700">
-            v1.0.0
-          </span>
-        </div>
+  <!-- Subtle Tactile Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- =========================================================================
+       STICKY GLASSMORPHIC NAVBAR
+  ========================================================================== -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="#" class="brand" aria-label="gabrandalisse/skills home">
+        <span class="brand-badge" aria-hidden="true">🔥</span>
+        <span>gabrandalisse<span class="brand-slash">/</span>skills</span>
       </a>
 
-      <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
-        <a href="#skills" class="hover:text-emerald-400 transition">Skills</a>
-        <a href="#install" class="hover:text-emerald-400 transition">Install</a>
-        <a href="#structure" class="hover:text-emerald-400 transition">Structure</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#install" class="nav-link">Install</a>
+        <a href="#structure" class="nav-link">Structure</a>
       </nav>
 
-      <!-- GitHub CTA -->
-      <div class="flex items-center gap-2">
-        <a
-          href="https://github.com/gabrandalisse/skills"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-slate-800/90 hover:bg-slate-700 text-slate-100 border border-slate-700 transition shadow-sm"
-        >
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-          </svg>
-          <span>GitHub</span>
-        </a>
-      </div>
+      <a
+        href="https://github.com/gabrandalisse/skills"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-github"
+      >
+        <span>GitHub Repo</span>
+        <span aria-hidden="true">↗</span>
+      </a>
     </div>
   </header>
 
-  <main class="flex-1">
-    <!-- =========================================================
-         HERO SECTION
-    ========================================================== -->
-    <section class="relative overflow-hidden border-b border-borderSubtle grid-pattern">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <div class="max-w-3xl mx-auto text-center">
-          <!-- Eyebrow Badge -->
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs sm:text-sm font-medium mb-6">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Open <code class="font-mono text-emerald-200">SKILL.md</code> Standard • Multi-Agent Ready</span>
+  <main>
+    <!-- =======================================================================
+         HERO SECTION & INTERACTIVE MULTI-AGENT TERMINAL
+    ======================================================================== -->
+    <section class="hero-section">
+      <!-- GPU Parallax Ambient Orbs -->
+      <div class="ambient-orb orb-1" data-parallax-speed="0.22" aria-hidden="true"></div>
+      <div class="ambient-orb orb-2" data-parallax-speed="-0.18" aria-hidden="true"></div>
+      <div class="ambient-orb orb-3" data-parallax-speed="0.14" aria-hidden="true"></div>
+
+      <!-- Kinetic Background Watermark -->
+      <div
+        class="kinetic-watermark"
+        style="top: 2.5rem; left: 50%; transform: translate3d(-50%, 0, 0);"
+        data-parallax-speed="0.28"
+        data-parallax-axis="horizontal"
+        data-centered="true"
+        aria-hidden="true"
+      >
+        HEXAGONAL
+      </div>
+
+      <div class="container">
+        <div class="hero-content reveal">
+          <div class="hero-pill">
+            <span aria-hidden="true">🔥</span>
+            <span>Open Standard SKILL.md · v1.0.0</span>
           </div>
 
-          <!-- Headline -->
-          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-50 leading-tight mb-6">
-            Reusable workflows for
-            <span class="bg-gradient-to-r from-emerald-400 via-cyan-300 to-indigo-400 bg-clip-text text-transparent">
-              AI coding agents.
-            </span>
+          <h1 class="hero-title">
+            Reusable Workflows for
+            <span class="hero-title-gradient">AI Coding Agents.</span>
           </h1>
 
-          <!-- Subtitle -->
-          <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
-            Personal collection of battle-tested <code class="font-mono text-slate-100">SKILL.md</code> workflows built for
-            <span class="text-slate-100 font-medium">Claude Code</span>,
-            <span class="text-slate-100 font-medium">OpenAI Codex</span>,
-            <span class="text-slate-100 font-medium">Gemini CLI</span>,
-            <span class="text-slate-100 font-medium">Cursor</span>,
-            <span class="text-slate-100 font-medium">Antigravity</span>, and
-            <span class="text-slate-100 font-medium">GitHub Copilot</span>.
+          <p class="hero-subtitle">
+            Portable <code class="inline-code">SKILL.md</code> engineering modules designed to bring deterministic architecture protocols, characterization tests, and strict Plan Mode execution to Claude Code, OpenAI Codex, Gemini CLI, Cursor, and GitHub Copilot.
           </p>
-
-          <!-- Primary & Secondary CTAs -->
-          <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
-            <a
-              href="#skills"
-              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/10"
-            >
-              <span>Explore Skills</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-
-            <a
-              href="#install"
-              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold bg-surface hover:bg-slate-800 text-slate-100 border border-slate-700 transition"
-            >
-              <span>Quick Install</span>
-            </a>
-
-            <a
-              href="https://github.com/gabrandalisse/skills"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium text-slate-300 hover:text-white bg-slate-900/70 hover:bg-slate-800/80 border border-borderSubtle transition"
-            >
-              <span>View on GitHub</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
-          </div>
         </div>
 
-        <!-- Interactive Quick Install Terminal -->
-        <div id="install" class="max-w-3xl mx-auto bg-surface border border-borderSubtle rounded-2xl shadow-2xl overflow-hidden scroll-mt-24">
-          <!-- Terminal Top Bar + Ecosystem Tabs -->
-          <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-[#0c1220] border-b border-borderSubtle">
-            <div class="flex items-center gap-1.5">
-              <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
-              <span class="w-3 h-3 rounded-full bg-amber-400/80"></span>
-              <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+        <!-- Interactive Multi-Agent Install Terminal -->
+        <div id="install" class="terminal-card reveal" style="scroll-margin-top: 5.5rem;">
+          <div class="terminal-header">
+            <div class="window-dots" aria-hidden="true">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-orange"></span>
+              <span class="dot dot-coral"></span>
             </div>
 
-            <div id="hero-tabs" class="flex flex-wrap items-center gap-1" role="tablist" aria-label="Select agent CLI">
-              <button type="button" data-tab="skillssh" class="hero-tab active px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 transition cursor-pointer">
-                skills.sh (All Agents)
+            <div class="tab-group" role="tablist" aria-label="Agent CLI selector">
+              <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-tab="skillssh">
+                ⚡ skills.sh CLI
               </button>
-              <button type="button" data-tab="claude" class="hero-tab px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="claude">
                 Claude Code
               </button>
-              <button type="button" data-tab="codex" class="hero-tab px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="codex">
                 OpenAI Codex
               </button>
-              <button type="button" data-tab="gemini" class="hero-tab px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 border border-transparent transition cursor-pointer">
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="gemini">
                 Gemini CLI
               </button>
             </div>
           </div>
 
-          <!-- Command Display Body -->
-          <div class="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4 bg-[#0b101d]">
-            <div class="overflow-x-auto flex-1">
-              <p id="hero-tab-hint" class="text-xs text-slate-400 mb-2.5">
-                Install and index all repository skills across 35+ compatible AI coding agents:
+          <div class="terminal-body">
+            <div class="terminal-info">
+              <p id="terminal-hint" class="terminal-hint">
+                Installs across 35+ compatible AI coding agents via the open skills.sh CLI.
               </p>
-              <pre id="hero-command-display" class="font-mono text-xs sm:text-sm text-emerald-300 leading-relaxed whitespace-pre-wrap"><span class="text-slate-500 select-none">$ </span>npx skills add gabrandalisse/skills</pre>
-              <p id="hero-tab-note" class="hidden mt-3 pt-2.5 border-t border-borderSubtle text-xs text-slate-400 font-mono whitespace-pre-wrap"></p>
+              <pre id="terminal-cmd" class="terminal-cmd"><span class="cmd-prompt">$ </span>npx skills add gabrandalisse/skills</pre>
             </div>
 
-            <button
-              id="hero-copy-btn"
-              type="button"
-              class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-md cursor-pointer"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-              <span id="hero-copy-label">Copy</span>
+            <button type="button" id="terminal-copy-btn" class="btn-primary" aria-label="Copy install command">
+              <span aria-hidden="true">📋</span>
+              <span id="terminal-copy-label">Copy</span>
             </button>
           </div>
         </div>
 
-        <!-- Compatibility Pill Bar -->
-        <div class="max-w-4xl mx-auto mt-10 text-center">
-          <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-4">
-            Natively supported across
-          </p>
-          <div class="flex flex-wrap items-center justify-center gap-2.5">
-            <span class="px-3.5 py-1.5 rounded-xl bg-surface border border-borderSubtle text-xs font-medium text-slate-300">Claude Code</span>
-            <span class="px-3.5 py-1.5 rounded-xl bg-surface border border-borderSubtle text-xs font-medium text-slate-300">OpenAI Codex</span>
-            <span class="px-3.5 py-1.5 rounded-xl bg-surface border border-borderSubtle text-xs font-medium text-slate-300">Gemini CLI</span>
-            <span class="px-3.5 py-1.5 rounded-xl bg-surface border border-borderSubtle text-xs font-medium text-slate-300">Cursor</span>
-            <span class="px-3.5 py-1.5 rounded-xl bg-surface border border-borderSubtle text-xs font-medium text-slate-300">Antigravity</span>
-            <span class="px-3.5 py-1.5 rounded-xl bg-surface border border-borderSubtle text-xs font-medium text-slate-300">GitHub Copilot</span>
+        <!-- Ecosystem Compatibility Strip -->
+        <div class="ecosystem-strip reveal">
+          <p class="ecosystem-label">Native Interoperability Across Ecosystems</p>
+          <div class="ecosystem-list">
+            <span class="ecosystem-chip">Claude Code</span>
+            <span class="ecosystem-chip">OpenAI Codex</span>
+            <span class="ecosystem-chip">Gemini CLI</span>
+            <span class="ecosystem-chip">Cursor</span>
+            <span class="ecosystem-chip">Antigravity</span>
+            <span class="ecosystem-chip">GitHub Copilot</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- =========================================================
-         SKILLS CATALOG SECTION (#skills)
-    ========================================================== -->
-    <section id="skills" class="py-16 sm:py-20 border-b border-borderSubtle scroll-mt-16">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <!-- Section Header + Search -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-          <div class="max-w-2xl">
-            <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">Workflow Catalog</span>
-            <h2 class="text-2xl sm:text-3xl font-bold text-slate-50 mt-1.5">
-              Skills Collection
-            </h2>
-            <p class="text-sm sm:text-base text-slate-400 mt-2.5 leading-relaxed">
-              Each skill is a self-contained <code class="font-mono text-cyan-300">SKILL.md</code> package. Agents index only its lightweight metadata on startup and load the full procedural workflow on demand when triggered by your prompt.
-            </p>
-          </div>
+    <!-- =======================================================================
+         SKILLS CATALOG SECTION
+    ======================================================================== -->
+    <section id="skills" class="section" style="scroll-margin-top: 4rem;">
+      <!-- Kinetic Background Watermark -->
+      <div
+        class="kinetic-watermark"
+        style="top: 2rem; right: 2%;"
+        data-parallax-speed="-0.24"
+        data-parallax-axis="horizontal"
+        aria-hidden="true"
+      >
+        PORTS
+      </div>
 
-          <!-- Search Input -->
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div class="relative">
-              <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input
-                id="skill-search"
-                type="text"
-                placeholder="Filter skills by name, tag, or use case..."
-                class="w-full sm:w-72 pl-10 pr-4 py-2.5 rounded-xl bg-surface border border-borderSubtle text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 transition"
-              />
-            </div>
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">
+            <span aria-hidden="true">🧭</span>
+            <span>Curated Workflow Library</span>
           </div>
+          <h2 class="section-title">Available Agent Skills</h2>
+          <p class="section-desc">
+            Every skill is structured as a self-contained <code class="inline-code">SKILL.md</code> module. Agents index lightweight frontmatter metadata at session startup and load full architectural guardrails on demand.
+          </p>
         </div>
 
         <!-- Category Filter Pills -->
-        <div id="category-filters" class="flex flex-wrap items-center gap-2 mb-8">
-          <button type="button" data-category="all" class="cat-pill active px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 transition cursor-pointer">
-            All
-          </button>
-          <button type="button" data-category="Architecture" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-surface text-slate-400 hover:text-slate-200 border border-borderSubtle transition cursor-pointer">
-            Architecture
-          </button>
+        <div class="catalog-controls reveal">
+          <div id="filter-pills" class="filter-pills" role="group" aria-label="Filter skills by category">
+            <button type="button" class="filter-pill active" data-category="all">All Skills</button>
+            <button type="button" class="filter-pill" data-category="Architecture">📐 Architecture</button>
+            <button type="button" class="filter-pill" data-category="Plan Mode">🧪 Plan Mode</button>
+          </div>
         </div>
 
         <!-- Dynamic Skills Grid -->
-        <div id="skills-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Populated dynamically from SKILLS_DATA -->
-        </div>
+        <div id="skills-grid" class="skills-grid reveal"></div>
       </div>
     </section>
 
-    <!-- =========================================================
-         REPOSITORY STRUCTURE & MULTI-MARKETPLACE ARCHITECTURE (#structure)
-    ========================================================== -->
-    <section id="structure" class="py-16 sm:py-20 scroll-mt-16">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="max-w-2xl mb-10">
-          <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">Repository Anatomy</span>
-          <h2 class="text-2xl sm:text-3xl font-bold text-slate-50 mt-1.5">
-            Multi-Marketplace Architecture
-          </h2>
-          <p class="text-sm sm:text-base text-slate-400 mt-2.5 leading-relaxed">
-            Click any file in the repository tree to inspect its manifest configuration and see how a single repo serves Claude Code, OpenAI Codex, Gemini CLI, and <code class="font-mono text-slate-200">skills.sh</code> simultaneously.
+    <!-- =======================================================================
+         INTERACTIVE REPOSITORY STRUCTURE EXPLORER
+    ======================================================================== -->
+    <section id="structure" class="section section-alt" style="scroll-margin-top: 4rem;">
+      <!-- Kinetic Background Watermark -->
+      <div
+        class="kinetic-watermark"
+        style="top: 2.25rem; left: 2%;"
+        data-parallax-speed="0.22"
+        data-parallax-axis="horizontal"
+        aria-hidden="true"
+      >
+        ADAPTERS
+      </div>
+
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">
+            <span aria-hidden="true">📦</span>
+            <span>Multi-Marketplace Manifests</span>
+          </div>
+          <h2 class="section-title">Single Repository, Every Marketplace</h2>
+          <p class="section-desc">
+            Select any file in the repository tree to inspect how <code class="inline-code">gabrandalisse/skills</code> exposes the exact same skill definitions natively across Claude Code, OpenAI Codex, Gemini CLI, and <code class="inline-code">skills.sh</code>.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-surface border border-borderSubtle rounded-2xl overflow-hidden shadow-xl">
-          <!-- Left Pane: Interactive File Tree -->
-          <div class="lg:col-span-5 bg-[#0c1220] border-b lg:border-b-0 lg:border-r border-borderSubtle p-5">
-            <div class="flex items-center gap-2 text-xs font-mono text-slate-400 pb-3 mb-3 border-b border-borderSubtle">
-              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-              </svg>
-              <span>gabrandalisse/skills/</span>
+        <div class="repo-explorer reveal">
+          <!-- Left Column: Interactive File Tree -->
+          <aside class="repo-sidebar" aria-label="Repository file tree">
+            <div class="repo-sidebar-header">gabrandalisse/skills</div>
+            <ul id="repo-tree" class="file-tree" role="listbox" aria-label="Select repository file"></ul>
+          </aside>
+
+          <!-- Right Column: Dynamic File Preview -->
+          <div class="repo-viewer">
+            <div class="repo-viewer-header">
+              <span id="viewer-file-path" class="repo-file-path"></span>
+              <button type="button" id="viewer-copy-btn" class="btn-secondary" style="padding: 0.42rem 0.85rem; font-size: 0.78rem;">
+                <span aria-hidden="true">📋</span>
+                <span id="viewer-copy-label">Copy File</span>
+              </button>
             </div>
-
-            <ul id="repo-tree" class="space-y-1.5 font-mono text-xs sm:text-sm" role="listbox" aria-label="Repository files">
-              <!-- Populated via JS -->
-            </ul>
-          </div>
-
-          <!-- Right Pane: Code Viewer -->
-          <div class="lg:col-span-7 p-6 flex flex-col justify-between">
-            <div>
-              <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-4 border-b border-borderSubtle">
-                <div>
-                  <span id="inspector-badge" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 mb-1.5">
-                    OpenAI Codex Marketplace
-                  </span>
-                  <h3 id="inspector-filename" class="font-mono text-base sm:text-lg font-semibold text-slate-100">
-                    .agents/plugins/marketplace.json
-                  </h3>
-                </div>
-                <button
-                  id="inspector-copy-btn"
-                  type="button"
-                  class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
-                >
-                  Copy snippet
-                </button>
-              </div>
-
-              <p id="inspector-description" class="text-sm text-slate-300 leading-relaxed mb-4"></p>
-
-              <div class="bg-[#090d16] border border-borderSubtle rounded-xl p-4 overflow-x-auto">
-                <pre id="inspector-code" class="font-mono text-xs text-slate-200 leading-relaxed"></pre>
-              </div>
-            </div>
+            <div id="viewer-file-purpose" class="repo-file-purpose"></div>
+            <pre id="viewer-code-content" class="repo-code-content"></pre>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- =========================================================
+  <!-- =========================================================================
        FOOTER
-  ========================================================== -->
-  <footer class="border-t border-borderSubtle bg-[#070a12] py-10">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-400">
-      <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-        <span class="font-mono text-slate-200 font-semibold">gabrandalisse/skills</span>
-        <span>•</span>
-        <span>Maintained by Gabriel Brandalisse</span>
-        <span>•</span>
-        <span>MIT License</span>
-      </div>
-
-      <div class="flex items-center gap-5">
-        <a href="https://github.com/gabrandalisse/skills" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">
-          GitHub
-        </a>
-        <a href="https://skills.sh" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">
-          skills.sh
-        </a>
-        <a href="https://github.com/gabrandalisse/skills/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">
-          MIT License
+  ========================================================================== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-credit">
+        Crafted by <strong>Gabriel Brandalisse</strong> · Open Standard <code class="inline-code">SKILL.md</code> Workflows
+      </p>
+      <div class="footer-meta">
+        <span>MIT / Open Standard</span>
+        <a
+          href="https://github.com/gabrandalisse/skills"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+        >
+          github.com/gabrandalisse/skills ↗
         </a>
       </div>
     </div>
   </footer>
 
-  <!-- =========================================================
-       SKILL INSPECTOR MODAL
-  ========================================================== -->
+  <!-- =========================================================================
+       SKILL.MD INSPECTOR MODAL
+  ========================================================================== -->
   <div
     id="skill-modal"
-    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    class="modal-backdrop"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="modal-title"
+    aria-labelledby="modal-skill-title"
   >
-    <div class="bg-surface border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-      <!-- Modal Header -->
-      <div class="px-6 py-4 bg-[#0c1220] border-b border-borderSubtle flex items-center justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-2">
-            <span id="modal-category" class="text-xs font-mono text-emerald-400">Architecture</span>
-            <span class="text-slate-600">•</span>
-            <span id="modal-version" class="text-xs font-mono text-slate-400">v1.0.0</span>
-          </div>
-          <h3 id="modal-title" class="font-mono text-lg sm:text-xl font-bold text-slate-50 mt-0.5">
-            to-hexagonal-architecture
-          </h3>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span aria-hidden="true">📐</span>
+          <h3 id="modal-skill-title" class="modal-title">skills/to-hexagonal-architecture/SKILL.md</h3>
         </div>
-
-        <button
-          id="close-modal-btn"
-          type="button"
-          aria-label="Close modal"
-          class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition cursor-pointer"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Scrollable Modal Body -->
-      <div class="p-6 overflow-y-auto space-y-6">
-        <!-- Execution Phases -->
-        <div>
-          <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-            Execution Workflow (Strict Plan Mode)
-          </h4>
-          <div id="modal-phases" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-        <!-- Example Trigger Prompt -->
-        <div class="bg-[#0c1220] border border-borderSubtle rounded-xl p-4">
-          <div class="flex items-center justify-between gap-2 mb-1.5">
-            <span class="text-xs font-semibold text-cyan-300">Example trigger prompt</span>
-            <button id="modal-copy-prompt" type="button" class="text-xs text-slate-400 hover:text-slate-200 underline cursor-pointer">
-              Copy prompt
-            </button>
-          </div>
-          <p id="modal-prompt-text" class="font-mono text-xs sm:text-sm text-slate-200"></p>
-        </div>
-
-        <!-- Full SKILL.md Content -->
-        <div>
-          <div class="flex items-center justify-between gap-2 mb-2">
-            <span id="modal-filepath" class="text-xs font-mono text-slate-400">skills/to-hexagonal-architecture/SKILL.md</span>
-            <button
-              id="modal-copy-md"
-              type="button"
-              class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
-            >
-              Copy Markdown
-            </button>
-          </div>
-          <pre id="modal-markdown" class="bg-[#090d16] border border-borderSubtle rounded-xl p-4 font-mono text-xs text-slate-200 leading-relaxed overflow-x-auto whitespace-pre-wrap"></pre>
+        <div class="modal-actions">
+          <button type="button" id="modal-copy-btn" class="btn-secondary" style="padding: 0.45rem 0.9rem; font-size: 0.78rem;">
+            <span aria-hidden="true">📋</span>
+            <span id="modal-copy-label">Copy Markdown</span>
+          </button>
+          <button type="button" id="modal-download-btn" class="btn-primary" style="padding: 0.45rem 0.9rem; font-size: 0.78rem;">
+            <span aria-hidden="true">⬇️</span>
+            <span>Download SKILL.md</span>
+          </button>
+          <button type="button" id="modal-close-btn" class="modal-close" aria-label="Close modal">
+            ✕
+          </button>
         </div>
       </div>
+      <pre id="modal-markdown-body" class="modal-body"></pre>
     </div>
   </div>
 
-  <!-- =========================================================
-       TOAST NOTIFICATION
-  ========================================================== -->
-  <div
-    id="toast"
-    role="status"
-    aria-live="polite"
-    class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 bg-slate-900 border border-emerald-500/40 text-slate-100 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs sm:text-sm font-medium"
-  >
-    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+  <!-- Non-blocking Copy Confirmation Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span aria-hidden="true">✅</span>
     <span id="toast-message">Copied to clipboard!</span>
   </div>
 
-  <!-- =========================================================
-       JAVASCRIPT: SKILLS DATA & INTERACTIVITY
-  ========================================================== -->
+  <!-- =========================================================================
+       APPLICATION DATA & INTERACTIVE BEHAVIOR
+  ========================================================================== -->
   <script>
-    /**
-     * =========================================================================
-     * SKILLS CATALOG DATA (SKILLS_DATA)
-     * To add a new skill to this landing page, append a new object to this
-     * array following the exact schema below.
-     * =========================================================================
-     */
-    const SKILLS_DATA = [
-      {
-        id: 'to-hexagonal-architecture',
-        name: 'to-hexagonal-architecture',
-        version: '1.0.0',
-        category: 'Architecture',
-        filepath: 'skills/to-hexagonal-architecture/SKILL.md',
-        summary:
-          'Analyzes an existing codebase in any language or framework and produces a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters).',
-        highlights: [
-          'Zero Breaking Changes',
-          'Characterization Tests First',
-          'Strict Dependency Rule',
-          'Multi-Stack Adaptive',
-          '5-Phase Plan Mode'
-        ],
-        triggerPrompt:
-          'Analyze this project and design a phased refactoring plan to migrate it to Hexagonal Architecture with zero breaking changes.',
-        installCommand: 'npx skills add gabrandalisse/skills',
-        phases: [
-          { step: 'Phase 1', title: 'Characterization Tests', desc: 'Lock existing external contracts with automated tests, scaffold directories, and wire Composition Root (di/).' },
-          { step: 'Phase 2', title: 'Domain Extraction', desc: 'Extract pure entities, immutable value objects, semantic domain errors, and ports/in + ports/out interfaces.' },
-          { step: 'Phase 3', title: 'Use Cases & Driven Adapters', desc: 'Implement application use cases, DTOs, persistence/external adapters, and anti-corruption mappers.' },
-          { step: 'Phase 4', title: 'Driving Adapters', desc: 'Refactor HTTP/CLI controllers into thin adapters with transport mappers and legacy error translation.' },
-          { step: 'Phase 5', title: 'Cleanup & Verification', desc: 'Remove legacy files, run the full test suite, linter, and type checker to confirm zero drift.' }
-        ],
-        markdown: `---
+    // =========================================================================
+    // 1. COMPLETE SKILL.MD CONTENT
+    // =========================================================================
+    const TO_HEXAGONAL_SKILL_MD = `---
 name: to-hexagonal-architecture
 description: Analyze an existing codebase in any language or framework and produce a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters). Use when the user asks to refactor, migrate, or restructure a service, API, or monolith into hexagonal architecture, ports and adapters, or clean architecture while preserving existing contracts.
 ---
@@ -605,110 +1570,144 @@ Deliver the response structured into these exact sections:
 
 - **Do not edit code prematurely:** Unless the user explicitly asks to start executing Phase 1 immediately, output only the plan first so they can review module boundaries.
 - **Avoid over-abstraction on trivial CRUD:** Still separate \`domain\`, \`application\`, and \`infrastructure\` cleanly, but keep pass-through use cases concise rather than inventing artificial domain complexity.
-- **Match legacy quirks:** If an existing endpoint returns a non-standard status code or error field name, document it in Phase 1 and preserve it in the \`infrastructure\` error mapper so existing clients do not break.`
+- **Match legacy quirks:** If an existing endpoint returns a non-standard status code or error field name, document it in Phase 1 and preserve it in the \`infrastructure\` error mapper so existing clients do not break.`;
+
+    // =========================================================================
+    // 2. SKILLS_DATA ARRAY (Add future SKILL.md entries here)
+    // =========================================================================
+    const SKILLS_DATA = [
+      {
+        id: 'to-hexagonal-architecture',
+        name: 'to-hexagonal-architecture',
+        version: 'v1.0.0',
+        categories: ['Architecture', 'Plan Mode'],
+        badges: [
+          { emoji: '📐', label: 'Architecture' },
+          { emoji: '🛡️', label: 'Zero Breaking Changes' },
+          { emoji: '🧪', label: 'Plan Mode' }
+        ],
+        description:
+          'Analyzes an existing codebase in any language or framework and produces a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters).',
+        highlights: [
+          'Characterization tests first — locks every existing HTTP/RPC route, status code, and error quirk before moving production code.',
+          'Strict inward dependency rule (domain → application → infrastructure) with zero framework or ORM leaks into the core.',
+          'Stack-idiomatic scaffolding tailored to TypeScript/Node, Python, Go, Java/Kotlin, C#, or Rust ecosystems.',
+          'Five atomic execution phases with explicit validation checkpoints and Composition Root constructor wiring.'
+        ],
+        fileName: 'SKILL.md',
+        markdown: TO_HEXAGONAL_SKILL_MD
       }
     ];
 
-    /**
-     * =========================================================================
-     * QUICK INSTALL TERMINAL TABS CONFIGURATION
-     * =========================================================================
-     */
-    const HERO_TABS_DATA = {
+    // =========================================================================
+    // 3. MULTI-AGENT TERMINAL CONFIGURATIONS
+    // =========================================================================
+    const TERMINAL_TABS = {
       skillssh: {
-        hint: 'Install and index all skills across 35+ compatible AI agents via skills.sh:',
-        command: 'npx skills add gabrandalisse/skills',
-        note: ''
+        hint: 'Installs across 35+ compatible AI coding agents via the open skills.sh CLI.',
+        rawCommand: 'npx skills add gabrandalisse/skills',
+        renderedHtml: '<span class="cmd-prompt">$ </span>npx skills add gabrandalisse/skills'
       },
       claude: {
-        hint: 'Register the plugin marketplace in Claude Code and install the skill:',
-        command: '/plugin marketplace add gabrandalisse/skills\n/plugin install to-hexagonal-architecture@gabrandalisse-skills',
-        note: ''
+        hint: 'Registers the marketplace and installs the plugin directly inside Claude Code.',
+        rawCommand:
+          '/plugin marketplace add gabrandalisse/skills\n/plugin install to-hexagonal-architecture@gabrandalisse-skills',
+        renderedHtml:
+          '<span class="cmd-prompt">&gt; </span>/plugin marketplace add gabrandalisse/skills\n<span class="cmd-prompt">&gt; </span>/plugin install to-hexagonal-architecture@gabrandalisse-skills'
       },
       codex: {
-        hint: 'Add the plugin marketplace in OpenAI Codex CLI or ChatGPT Desktop:',
-        command: 'codex plugin marketplace add gabrandalisse/skills\ncodex plugin add gabrandalisse-skills@gabrandalisse-skills',
-        note: 'Or install the skill directly inside a Codex session:\n$skill-installer install https://github.com/gabrandalisse/skills/tree/main/skills/to-hexagonal-architecture'
+        hint: 'Adds the Codex marketplace and installs the skill bundle for Codex CLI & ChatGPT Desktop.',
+        rawCommand:
+          'codex plugin marketplace add gabrandalisse/skills\ncodex plugin add gabrandalisse-skills@gabrandalisse-skills',
+        renderedHtml:
+          '<span class="cmd-prompt">$ </span>codex plugin marketplace add gabrandalisse/skills\n<span class="cmd-prompt">$ </span>codex plugin add gabrandalisse-skills@gabrandalisse-skills'
       },
       gemini: {
-        hint: 'Install only the skill or the full extension bundle in Gemini CLI:',
-        command: 'gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture',
-        note: 'Or install the full extension bundle:\ngemini extensions install https://github.com/gabrandalisse/skills.git'
+        hint: 'Installs the standalone skill directly from GitHub into Gemini CLI.',
+        rawCommand:
+          'gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture',
+        renderedHtml:
+          '<span class="cmd-prompt">$ </span>gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture'
       }
     };
 
-    /**
-     * =========================================================================
-     * REPOSITORY FILE TREE EXPLORER DATA
-     * =========================================================================
-     */
+    // =========================================================================
+    // 4. REPOSITORY STRUCTURE EXPLORER FILES
+    // =========================================================================
     const REPO_FILES = [
       {
         path: '.agents/plugins/marketplace.json',
-        badge: 'OpenAI Codex Marketplace',
-        description:
-          'Marketplace catalog consumed by OpenAI Codex CLI and ChatGPT Desktop when running codex plugin marketplace add gabrandalisse/skills.',
-        code: `{
-  "name": "gabrandalisse-skills",
-  "plugins": [
-    {
-      "name": "gabrandalisse-skills",
-      "source": "./"
-    }
-  ]
-}`
+        purpose: 'OpenAI Codex Marketplace catalog exposing the root repository as an installable plugin.',
+        content: JSON.stringify(
+          {
+            name: 'gabrandalisse-skills',
+            plugins: [
+              {
+                name: 'gabrandalisse-skills',
+                source: './'
+              }
+            ]
+          },
+          null,
+          2
+        )
       },
       {
         path: '.claude-plugin/marketplace.json',
-        badge: 'Claude Code Marketplace',
-        description:
-          'Plugin marketplace catalog read by Claude Code via /plugin marketplace add gabrandalisse/skills, exposing plugins under @gabrandalisse-skills.',
-        code: `{
-  "name": "gabrandalisse-skills",
-  "owner": {
-    "name": "Gabriel Brandalisse"
-  },
-  "plugins": [
-    {
-      "name": "to-hexagonal-architecture",
-      "source": "./skills/to-hexagonal-architecture",
-      "description": "Analyze an existing codebase in any language or framework and produce a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters)."
-    }
-  ]
-}`
+        purpose: 'Claude Code Plugin Marketplace manifest mapping individual skills to slash-command installs.',
+        content: JSON.stringify(
+          {
+            name: 'gabrandalisse-skills',
+            owner: {
+              name: 'Gabriel Brandalisse'
+            },
+            plugins: [
+              {
+                name: 'to-hexagonal-architecture',
+                source: './skills/to-hexagonal-architecture',
+                description:
+                  'Analyze an existing codebase in any language or framework and produce a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters).'
+              }
+            ]
+          },
+          null,
+          2
+        )
       },
       {
         path: '.codex-plugin/plugin.json',
-        badge: 'OpenAI Codex Manifest',
-        description:
-          'Root Codex plugin manifest automatically sharing the sibling skills/ folder across Codex sessions.',
-        code: `{
-  "name": "gabrandalisse-skills",
-  "version": "1.0.0",
-  "description": "Reusable AI agent skills for software architecture and engineering workflows.",
-  "author": {
-    "name": "Gabriel Brandalisse"
-  },
-  "repository": "https://github.com/gabrandalisse/skills"
-}`
+        purpose: 'OpenAI Codex plugin metadata paired with the sibling skills/ directory.',
+        content: JSON.stringify(
+          {
+            name: 'gabrandalisse-skills',
+            version: '1.0.0',
+            description: 'Reusable AI agent skills for software architecture and engineering workflows.',
+            author: {
+              name: 'Gabriel Brandalisse'
+            },
+            repository: 'https://github.com/gabrandalisse/skills'
+          },
+          null,
+          2
+        )
       },
       {
         path: 'gemini-extension.json',
-        badge: 'Gemini CLI Extension',
-        description:
-          'Gemini CLI extension manifest. Installing this repository as an extension automatically registers all skills inside skills/.',
-        code: `{
-  "name": "gabrandalisse-skills",
-  "version": "1.0.0",
-  "description": "Reusable AI agent skills for software architecture and engineering workflows."
-}`
+        purpose: 'Gemini CLI Extension manifest enabling one-command installation of all skills under /skills.',
+        content: JSON.stringify(
+          {
+            name: 'gabrandalisse-skills',
+            version: '1.0.0',
+            description: 'Reusable AI agent skills for software architecture and engineering workflows.'
+          },
+          null,
+          2
+        )
       },
       {
         path: 'CHANGELOG.md',
-        badge: 'Release History',
-        description:
-          'Versioned release log following Keep a Changelog, kept in sync with gemini-extension.json and .codex-plugin/plugin.json.',
-        code: `# Changelog
+        purpose: 'Keep-a-Changelog release history synchronized with gemini-extension.json and plugin.json.',
+        content: `# Changelog
 
 All notable changes to this repository will be documented in this file.
 
@@ -721,53 +1720,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Marketplace and extension manifests for Claude Code (\`.claude-plugin/marketplace.json\`), OpenAI Codex (\`.agents/plugins/marketplace.json\`, \`.codex-plugin/plugin.json\`), Gemini CLI (\`gemini-extension.json\`), and \`skills.sh\`.`
       },
       {
-        path: 'README.md',
-        badge: 'Documentation',
-        description:
-          'Repository overview, multi-agent installation commands, and directory layout documentation.',
-        code: `# Skills
-
-Personal collection of reusable \`SKILL.md\` workflows for AI coding agents (Claude Code, OpenAI Codex, Gemini CLI, Cursor, Antigravity, and GitHub Copilot).
-
-## Available Skills
-
-- **\`to-hexagonal-architecture\`**: Analyzes an existing codebase in any language or framework and produces a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters).`
-      },
-      {
         path: 'skills/to-hexagonal-architecture/SKILL.md',
-        badge: 'Open SKILL.md Standard',
-        description:
-          'Core skill definition containing YAML frontmatter metadata for semantic triggering and the 5-phase zero-breaking-change refactoring workflow.',
-        code: `---
-name: to-hexagonal-architecture
-description: Analyze an existing codebase in any language or framework and produce a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters). Use when the user asks to refactor, migrate, or restructure a service, API, or monolith into hexagonal architecture, ports and adapters, or clean architecture while preserving existing contracts.
----
-
-# To Hexagonal Architecture
-
-Analyze an existing repository in depth and design an atomic, phased refactoring plan to migrate it to **Hexagonal Architecture (Ports and Adapters)** without breaking any external contracts or observable behavior...`
+        purpose: 'Portable open-standard SKILL.md prompt and protocol loaded by AI coding agents.',
+        content: TO_HEXAGONAL_SKILL_MD
       }
     ];
 
     // =========================================================================
-    // CLIPBOARD & TOAST UTILITIES
+    // 5. UTILITY FUNCTIONS (Safe Clipboard, File Download, Toast, Escape)
     // =========================================================================
-    let toastTimeout = null;
+    let toastTimer = null;
+
     function showToast(message) {
       const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-message');
-      toastMsg.textContent = message;
-      toast.classList.remove('opacity-0', 'translate-y-2');
-      toast.classList.add('opacity-100', 'translate-y-0');
-
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-2');
-        toast.classList.remove('opacity-100', 'translate-y-0');
-      }, 2200);
+      const label = document.getElementById('toast-message');
+      if (!toast || !label) return;
+      label.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2400);
     }
 
-    function copyText(text, customToast = 'Copied to clipboard!') {
+    function copyTextToClipboard(text, onSuccess) {
       const textarea = document.createElement('textarea');
       textarea.value = text;
       textarea.setAttribute('readonly', '');
@@ -775,341 +1751,493 @@ Analyze an existing repository in depth and design an atomic, phased refactoring
       textarea.style.opacity = '0';
       document.body.appendChild(textarea);
       textarea.select();
+
+      let copied = false;
       try {
-        document.execCommand('copy');
-        showToast(customToast);
+        copied = document.execCommand('copy');
       } catch (err) {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(text).then(() => showToast(customToast));
-        }
-      } finally {
-        document.body.removeChild(textarea);
+        copied = false;
+      }
+      document.body.removeChild(textarea);
+
+      if (copied) {
+        if (onSuccess) onSuccess();
+        showToast('Copied to clipboard!');
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            if (onSuccess) onSuccess();
+            showToast('Copied to clipboard!');
+          })
+          .catch(() => {
+            showToast('Unable to copy automatically.');
+          });
       }
     }
 
+    function downloadMarkdownFile(filename, content) {
+      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast(`Downloaded ${filename}`);
+    }
+
     function escapeHtml(str) {
-      return str
+      return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     // =========================================================================
-    // INTERACTIVE QUICK INSTALL TERMINAL
+    // 6. TERMINAL TABS & COPY HANDLER
     // =========================================================================
-    let activeHeroTab = 'skillssh';
-    const heroTabs = document.querySelectorAll('.hero-tab');
-    const heroHint = document.getElementById('hero-tab-hint');
-    const heroCommandDisplay = document.getElementById('hero-command-display');
-    const heroTabNote = document.getElementById('hero-tab-note');
-    const heroCopyBtn = document.getElementById('hero-copy-btn');
-    const heroCopyLabel = document.getElementById('hero-copy-label');
+    let activeTabKey = 'skillssh';
 
-    heroTabs.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        activeHeroTab = btn.dataset.tab;
-        heroTabs.forEach((t) => {
-          t.classList.remove('active', 'bg-emerald-500/15', 'text-emerald-300', 'border-emerald-500/30');
-          t.classList.add('text-slate-400', 'border-transparent');
+    function initTerminal() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const hintEl = document.getElementById('terminal-hint');
+      const cmdEl = document.getElementById('terminal-cmd');
+      const copyBtn = document.getElementById('terminal-copy-btn');
+      const copyLabel = document.getElementById('terminal-copy-label');
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.tab;
+          if (!TERMINAL_TABS[key]) return;
+          activeTabKey = key;
+
+          tabButtons.forEach((b) => {
+            const isSelected = b.dataset.tab === key;
+            b.classList.toggle('active', isSelected);
+            b.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+          });
+
+          hintEl.textContent = TERMINAL_TABS[key].hint;
+          cmdEl.innerHTML = TERMINAL_TABS[key].renderedHtml;
         });
-        btn.classList.add('active', 'bg-emerald-500/15', 'text-emerald-300', 'border-emerald-500/30');
-        btn.classList.remove('text-slate-400', 'border-transparent');
-
-        const data = HERO_TABS_DATA[activeHeroTab];
-        heroHint.textContent = data.hint;
-        heroCommandDisplay.innerHTML = data.command
-          .split('\n')
-          .map((line) => `<span class="text-slate-500 select-none">$ </span>${escapeHtml(line)}`)
-          .join('\n');
-
-        if (data.note) {
-          heroTabNote.textContent = data.note;
-          heroTabNote.classList.remove('hidden');
-        } else {
-          heroTabNote.textContent = '';
-          heroTabNote.classList.add('hidden');
-        }
       });
-    });
 
-    heroCopyBtn.addEventListener('click', () => {
-      const cmd = HERO_TABS_DATA[activeHeroTab].command;
-      copyText(cmd, 'Install command copied!');
-      heroCopyLabel.textContent = 'Copied!';
-      setTimeout(() => {
-        heroCopyLabel.textContent = 'Copy';
-      }, 1800);
-    });
+      copyBtn.addEventListener('click', () => {
+        const raw = TERMINAL_TABS[activeTabKey].rawCommand;
+        copyTextToClipboard(raw, () => {
+          copyLabel.textContent = 'Copied!';
+          setTimeout(() => {
+            copyLabel.textContent = 'Copy';
+          }, 1800);
+        });
+      });
+    }
 
     // =========================================================================
-    // SKILLS CATALOG RENDERING & FILTERING
+    // 7. SKILLS CATALOG RENDERING & FILTERING
     // =========================================================================
     let selectedCategory = 'all';
-    let searchQuery = '';
 
-    function renderSkills() {
+    function renderSkillsCatalog() {
       const grid = document.getElementById('skills-grid');
-      const filtered = SKILLS_DATA.filter((skill) => {
-        const matchesCat = selectedCategory === 'all' || skill.category === selectedCategory;
-        const q = searchQuery.trim().toLowerCase();
-        const matchesSearch =
-          !q ||
-          skill.name.toLowerCase().includes(q) ||
-          skill.summary.toLowerCase().includes(q) ||
-          skill.category.toLowerCase().includes(q) ||
-          skill.highlights.some((h) => h.toLowerCase().includes(q));
-        return matchesCat && matchesSearch;
-      });
+      if (!grid) return;
 
-      let html = filtered
+      const filteredSkills =
+        selectedCategory === 'all'
+          ? SKILLS_DATA
+          : SKILLS_DATA.filter((skill) => skill.categories.includes(selectedCategory));
+
+      const cardsHtml = filteredSkills
         .map(
           (skill) => `
-          <article class="bg-surface border border-borderSubtle hover:border-emerald-500/40 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition shadow-lg">
+          <article class="tilt-card" data-tilt data-tilt-max="4">
             <div>
-              <!-- Card Header -->
-              <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  v${escapeHtml(skill.version)}
-                </span>
-                <span class="text-xs font-medium text-indigo-300 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/25">
-                  ${escapeHtml(skill.category)}
-                </span>
+              <div class="skill-top-row">
+                <div class="badge-row">
+                  ${skill.badges
+                    .map(
+                      (b) => `
+                    <span class="skill-badge">
+                      <span aria-hidden="true">${b.emoji}</span>
+                      <span>${escapeHtml(b.label)}</span>
+                    </span>`
+                    )
+                    .join('')}
+                </div>
+                <span class="version-tag">${escapeHtml(skill.version)}</span>
               </div>
 
-              <!-- Title & Summary -->
-              <h3 class="font-mono text-xl font-bold text-slate-50 mb-2.5">
-                ${escapeHtml(skill.name)}
-              </h3>
-              <p class="text-sm text-slate-300 leading-relaxed mb-5">
-                ${escapeHtml(skill.summary)}
-              </p>
+              <h3 class="skill-name">${escapeHtml(skill.name)}</h3>
+              <p class="skill-summary">${escapeHtml(skill.description)}</p>
 
-              <!-- Feature Highlights -->
-              <div class="flex flex-wrap gap-1.5 mb-5">
+              <ul class="highlights-list">
                 ${skill.highlights
                   .map(
-                    (tag) =>
-                      `<span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-800/90 text-slate-300 border border-slate-700/70">${escapeHtml(tag)}</span>`
+                    (item) => `
+                  <li>
+                    <span class="highlight-bullet" aria-hidden="true">→</span>
+                    <span>${escapeHtml(item)}</span>
+                  </li>`
                   )
                   .join('')}
-              </div>
-
-              <!-- Example Trigger Prompt -->
-              <div class="bg-[#090d16] border border-borderSubtle rounded-xl p-3.5 mb-6">
-                <div class="flex items-center justify-between gap-2 mb-1.5">
-                  <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500">
-                    Example Trigger Prompt
-                  </span>
-                  <button
-                    type="button"
-                    onclick="copyText('${escapeHtml(skill.triggerPrompt)}', 'Trigger prompt copied!')"
-                    class="text-[11px] font-medium text-slate-400 hover:text-emerald-300 transition cursor-pointer"
-                  >
-                    Copy prompt
-                  </button>
-                </div>
-                <p class="font-mono text-xs text-cyan-300 leading-relaxed">
-                  "${escapeHtml(skill.triggerPrompt)}"
-                </p>
-              </div>
+              </ul>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4 border-t border-borderSubtle">
+            <div class="card-actions">
               <button
                 type="button"
-                onclick="openSkillModal('${skill.id}')"
-                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+                class="btn-primary"
+                onclick="openSkillModal('${escapeHtml(skill.id)}')"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                </svg>
+                <span aria-hidden="true">🔍</span>
                 <span>Inspect SKILL.md</span>
               </button>
-
               <button
                 type="button"
-                onclick="copyText('${escapeHtml(skill.installCommand)}', 'Install command copied!')"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+                class="btn-secondary"
+                onclick="downloadSkillById('${escapeHtml(skill.id)}')"
               >
-                <span>Install Command</span>
+                <span aria-hidden="true">⬇️</span>
+                <span>Download SKILL.md</span>
               </button>
             </div>
-          </article>
-        `
+          </article>`
         )
         .join('');
 
-      // "More skills coming soon" Extensibility Card
-      html += `
-        <article class="border-2 border-dashed border-borderSubtle rounded-2xl p-6 sm:p-7 flex flex-col justify-between bg-surface/30">
+      const extensibleCardHtml = `
+        <aside class="tilt-card extensible-card" data-tilt data-tilt-max="3.5">
           <div>
-            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-mono bg-slate-800 text-slate-400 border border-slate-700 mb-4">
-              <span>Extensible Collection</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-200 mb-2">
-              More skills coming soon
-            </h3>
-            <p class="text-sm text-slate-400 leading-relaxed mb-4">
-              This repository is structured as a modular multi-agent catalog. Adding a new workflow only takes dropping a folder under <code class="font-mono text-slate-200">skills/&lt;skill-name&gt;/SKILL.md</code> and registering it in the manifests.
+            <span class="skill-badge">
+              <span aria-hidden="true">⚡</span>
+              <span>Modular Repository</span>
+            </span>
+            <h3 class="extensible-title">Built to Grow With New Workflows</h3>
+            <p class="skill-summary">
+              Every skill lives in its own isolated folder under <code class="inline-code">skills/&lt;skill-name&gt;/SKILL.md</code>. Adding new engineering workflows automatically exposes them across every configured marketplace.
             </p>
-            <div class="bg-[#090d16]/80 border border-borderSubtle rounded-xl p-4 font-mono text-xs text-slate-400 space-y-1.5">
-              <p class="text-slate-300 font-semibold">// Extending this page:</p>
-              <p>1. Add <span class="text-emerald-400">skills/&lt;name&gt;/SKILL.md</span></p>
-              <p>2. Register in <span class="text-cyan-300">.claude-plugin/marketplace.json</span></p>
-              <p>3. Append an entry to <span class="text-indigo-300">SKILLS_DATA</span> in <span class="text-slate-200">index.html</span></p>
-            </div>
+            <ul class="extensible-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>Add a new <code class="inline-code">SKILL.md</code> directory with focused YAML frontmatter triggers.</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>Register the entry in <code class="inline-code">.claude-plugin/marketplace.json</code> and bump manifest versions.</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>Push to <code class="inline-code">main</code> — instant availability across Claude Code, Codex, Gemini CLI, and <code class="inline-code">skills.sh</code>.</span>
+              </li>
+            </ul>
           </div>
 
-          <div class="pt-5 mt-6 border-t border-borderSubtle flex items-center justify-between text-xs text-slate-500">
-            <span>Synced with v1.0.0</span>
-            <a href="https://github.com/gabrandalisse/skills" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline font-medium">
-              Star on GitHub →
+          <div class="card-actions">
+            <a
+              href="https://github.com/gabrandalisse/skills"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-secondary"
+              style="width: 100%;"
+            >
+              <span>View Repository on GitHub</span>
+              <span aria-hidden="true">↗</span>
             </a>
           </div>
-        </article>
-      `;
+        </aside>`;
 
-      grid.innerHTML = html;
+      grid.innerHTML = cardsHtml + extensibleCardHtml;
+      initTiltCards();
     }
 
-    // Search & Category Pill Listeners
-    document.getElementById('skill-search').addEventListener('input', (e) => {
-      searchQuery = e.target.value;
-      renderSkills();
-    });
-
-    document.querySelectorAll('.cat-pill').forEach((pill) => {
-      pill.addEventListener('click', () => {
-        selectedCategory = pill.dataset.category;
-        document.querySelectorAll('.cat-pill').forEach((p) => {
-          p.classList.remove('active', 'bg-emerald-500/15', 'text-emerald-300', 'border-emerald-500/30');
-          p.classList.add('bg-surface', 'text-slate-400', 'border-borderSubtle');
+    function initCategoryFilters() {
+      const pills = document.querySelectorAll('.filter-pill');
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          selectedCategory = pill.dataset.category || 'all';
+          pills.forEach((p) => p.classList.toggle('active', p === pill));
+          renderSkillsCatalog();
         });
-        pill.classList.add('active', 'bg-emerald-500/15', 'text-emerald-300', 'border-emerald-500/30');
-        pill.classList.remove('bg-surface', 'text-slate-400', 'border-borderSubtle');
-        renderSkills();
       });
-    });
+    }
 
     // =========================================================================
-    // SKILL INSPECTOR MODAL
+    // 8. SKILL.MD INSPECTOR MODAL
     // =========================================================================
-    const modal = document.getElementById('skill-modal');
-    let currentModalSkill = null;
+    let activeModalSkill = SKILLS_DATA[0];
 
     function openSkillModal(skillId) {
-      const skill = SKILLS_DATA.find((s) => s.id === skillId);
-      if (!skill) return;
-      currentModalSkill = skill;
+      const skill = SKILLS_DATA.find((s) => s.id === skillId) || SKILLS_DATA[0];
+      activeModalSkill = skill;
 
-      document.getElementById('modal-category').textContent = skill.category;
-      document.getElementById('modal-version').textContent = `v${skill.version}`;
-      document.getElementById('modal-title').textContent = skill.name;
-      document.getElementById('modal-filepath').textContent = skill.filepath;
-      document.getElementById('modal-prompt-text').textContent = `"${skill.triggerPrompt}"`;
-      document.getElementById('modal-markdown').textContent = skill.markdown;
+      const modal = document.getElementById('skill-modal');
+      const title = document.getElementById('modal-skill-title');
+      const body = document.getElementById('modal-markdown-body');
 
-      document.getElementById('modal-phases').innerHTML = skill.phases
-        .map(
-          (p) => `
-          <div class="bg-[#0c1220] border border-borderSubtle rounded-xl p-3.5">
-            <span class="text-[11px] font-mono font-semibold text-emerald-400">${escapeHtml(p.step)}</span>
-            <h5 class="text-xs sm:text-sm font-semibold text-slate-100 mt-0.5">${escapeHtml(p.title)}</h5>
-            <p class="text-xs text-slate-400 mt-1 leading-relaxed">${escapeHtml(p.desc)}</p>
-          </div>
-        `
-        )
-        .join('');
+      title.textContent = `skills/${skill.id}/SKILL.md`;
+      body.textContent = skill.markdown;
 
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+      modal.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeSkillModal() {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      const modal = document.getElementById('skill-modal');
+      modal.classList.remove('open');
       document.body.style.overflow = '';
     }
 
-    document.getElementById('close-modal-btn').addEventListener('click', closeSkillModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeSkillModal();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeSkillModal();
-      }
-    });
+    function downloadSkillById(skillId) {
+      const skill = SKILLS_DATA.find((s) => s.id === skillId) || SKILLS_DATA[0];
+      downloadMarkdownFile(`${skill.id}-SKILL.md`, skill.markdown);
+    }
 
-    document.getElementById('modal-copy-prompt').addEventListener('click', () => {
-      if (currentModalSkill) {
-        copyText(currentModalSkill.triggerPrompt, 'Trigger prompt copied!');
-      }
-    });
+    function initModal() {
+      const modal = document.getElementById('skill-modal');
+      const closeBtn = document.getElementById('modal-close-btn');
+      const copyBtn = document.getElementById('modal-copy-btn');
+      const copyLabel = document.getElementById('modal-copy-label');
+      const downloadBtn = document.getElementById('modal-download-btn');
 
-    document.getElementById('modal-copy-md').addEventListener('click', () => {
-      if (currentModalSkill) {
-        copyText(currentModalSkill.markdown, 'SKILL.md copied to clipboard!');
-      }
-    });
+      closeBtn.addEventListener('click', closeSkillModal);
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeSkillModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+          closeSkillModal();
+        }
+      });
+
+      copyBtn.addEventListener('click', () => {
+        if (!activeModalSkill) return;
+        copyTextToClipboard(activeModalSkill.markdown, () => {
+          copyLabel.textContent = 'Copied!';
+          setTimeout(() => {
+            copyLabel.textContent = 'Copy Markdown';
+          }, 1800);
+        });
+      });
+
+      downloadBtn.addEventListener('click', () => {
+        if (!activeModalSkill) return;
+        downloadMarkdownFile(`${activeModalSkill.id}-SKILL.md`, activeModalSkill.markdown);
+      });
+    }
 
     // =========================================================================
-    // INTERACTIVE REPOSITORY FILE TREE EXPLORER
+    // 9. INTERACTIVE REPOSITORY STRUCTURE EXPLORER
     // =========================================================================
-    let selectedFileIndex = 0;
+    let selectedRepoIndex = 0;
 
-    function renderRepoTree() {
+    function renderRepoExplorer() {
       const tree = document.getElementById('repo-tree');
-      tree.innerHTML = REPO_FILES.map((file, idx) => {
-        const isActive = idx === selectedFileIndex;
+      const filePathEl = document.getElementById('viewer-file-path');
+      const filePurposeEl = document.getElementById('viewer-file-purpose');
+      const codeEl = document.getElementById('viewer-code-content');
+
+      tree.innerHTML = REPO_FILES.map((file, index) => {
+        const isActive = index === selectedRepoIndex;
         return `
           <li>
             <button
               type="button"
-              onclick="selectRepoFile(${idx})"
-              class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 transition cursor-pointer ${
-                isActive
-                  ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
-              }"
+              role="option"
+              aria-selected="${isActive ? 'true' : 'false'}"
+              class="file-btn ${isActive ? 'active' : ''}"
+              onclick="selectRepoFile(${index})"
             >
-              <svg class="w-4 h-4 shrink-0 ${isActive ? 'text-emerald-400' : 'text-slate-500'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-              </svg>
-              <span class="truncate">${escapeHtml(file.path)}</span>
+              <span aria-hidden="true">📄</span>
+              <span>${escapeHtml(file.path)}</span>
             </button>
-          </li>
-        `;
+          </li>`;
       }).join('');
 
-      const activeFile = REPO_FILES[selectedFileIndex];
-      document.getElementById('inspector-badge').textContent = activeFile.badge;
-      document.getElementById('inspector-filename').textContent = activeFile.path;
-      document.getElementById('inspector-description').textContent = activeFile.description;
-      document.getElementById('inspector-code').textContent = activeFile.code;
+      const activeFile = REPO_FILES[selectedRepoIndex];
+      filePathEl.textContent = activeFile.path;
+      filePurposeEl.textContent = activeFile.purpose;
+      codeEl.textContent = activeFile.content;
     }
 
     function selectRepoFile(index) {
-      selectedFileIndex = index;
-      renderRepoTree();
+      selectedRepoIndex = index;
+      renderRepoExplorer();
     }
 
-    document.getElementById('inspector-copy-btn').addEventListener('click', () => {
-      const activeFile = REPO_FILES[selectedFileIndex];
-      copyText(activeFile.code, `Copied ${activeFile.path}!`);
-    });
+    function initRepoCopy() {
+      const copyBtn = document.getElementById('viewer-copy-btn');
+      const copyLabel = document.getElementById('viewer-copy-label');
 
-    // Initial Render
-    renderSkills();
-    renderRepoTree();
+      copyBtn.addEventListener('click', () => {
+        const activeFile = REPO_FILES[selectedRepoIndex];
+        copyTextToClipboard(activeFile.content, () => {
+          copyLabel.textContent = 'Copied!';
+          setTimeout(() => {
+            copyLabel.textContent = 'Copy File';
+          }, 1800);
+        });
+      });
+    }
+
+    // =========================================================================
+    // 10. GPU PARALLAX, SCROLL PROGRESS, REVEAL & 3D CARD TILT
+    // =========================================================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function initScrollEffects() {
+      const progressBar = document.getElementById('scroll-progress');
+      const parallaxElements = Array.from(document.querySelectorAll('[data-parallax-speed]'));
+      let ticking = false;
+
+      function onScrollFrame() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+        if (progressBar && maxScroll > 0) {
+          const ratio = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+          progressBar.style.transform = `scaleX(${ratio.toFixed(4)})`;
+        }
+
+        if (!prefersReducedMotion) {
+          const viewportMid = window.innerHeight * 0.5;
+          for (let i = 0; i < parallaxElements.length; i++) {
+            const el = parallaxElements[i];
+            const speed = parseFloat(el.dataset.parallaxSpeed || '0');
+            const axis = el.dataset.parallaxAxis || 'vertical';
+            const parentRect = el.parentElement
+              ? el.parentElement.getBoundingClientRect()
+              : el.getBoundingClientRect();
+            const distanceFromCenter = parentRect.top + parentRect.height * 0.5 - viewportMid;
+            const offset = -(distanceFromCenter * speed);
+
+            if (axis === 'horizontal') {
+              if (el.dataset.centered === 'true') {
+                el.style.transform = `translate3d(calc(-50% + ${offset.toFixed(1)}px), 0, 0)`;
+              } else {
+                el.style.transform = `translate3d(${offset.toFixed(1)}px, 0, 0)`;
+              }
+            } else {
+              el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+            }
+          }
+        }
+
+        ticking = false;
+      }
+
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!ticking) {
+            window.requestAnimationFrame(onScrollFrame);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+      window.addEventListener('resize', onScrollFrame, { passive: true });
+      onScrollFrame();
+    }
+
+    function initRevealObserver() {
+      const targets = document.querySelectorAll('.reveal');
+      if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      targets.forEach((el, idx) => {
+        el.style.transitionDelay = `${Math.min(idx * 55, 220)}ms`;
+        observer.observe(el);
+      });
+    }
+
+    function initTiltCards() {
+      if (prefersReducedMotion) return;
+
+      const cards = document.querySelectorAll('[data-tilt]');
+      cards.forEach((card) => {
+        if (card.dataset.tiltReady === 'true') return;
+        card.dataset.tiltReady = 'true';
+
+        const maxTilt = parseFloat(card.dataset.tiltMax || '4');
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let frameId = null;
+
+        function animate() {
+          currentX += (targetX - currentX) * 0.14;
+          currentY += (targetY - currentY) * 0.14;
+          card.style.transform = `perspective(1000px) rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg)`;
+
+          if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+            frameId = window.requestAnimationFrame(animate);
+          } else {
+            frameId = null;
+          }
+        }
+
+        card.addEventListener('pointermove', (e) => {
+          if (e.pointerType === 'touch') return;
+          const rect = card.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+
+          card.style.setProperty('--spot-x', `${(px * 100).toFixed(1)}%`);
+          card.style.setProperty('--spot-y', `${(py * 100).toFixed(1)}%`);
+          card.style.setProperty('--spot-opacity', '1');
+
+          targetY = (px - 0.5) * (maxTilt * 2);
+          targetX = -(py - 0.5) * (maxTilt * 2);
+
+          if (!frameId) {
+            frameId = window.requestAnimationFrame(animate);
+          }
+        });
+
+        card.addEventListener('pointerleave', () => {
+          card.style.setProperty('--spot-opacity', '0');
+          targetX = 0;
+          targetY = 0;
+          if (!frameId) {
+            frameId = window.requestAnimationFrame(animate);
+          }
+        });
+      });
+    }
+
+    // Boot Application
+    initTerminal();
+    initCategoryFilters();
+    renderSkillsCatalog();
+    initModal();
+    renderRepoExplorer();
+    initRepoCopy();
+    initRevealObserver();
+    initScrollEffects();
   </script>
 </body>
 </html>
