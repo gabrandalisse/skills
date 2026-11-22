@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.0] - 2026-11-20
+### Added
+- Landing page
+
 ## [1.1.0] - 2026-11-20
 ### Added
 - Codex Marketplace support for all skills
