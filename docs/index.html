@@ -685,7 +685,11 @@
 
     @media (min-width: 960px) {
       .skills-grid {
-        grid-template-columns: 1.45fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .skills-grid .extensible-card:nth-child(odd):last-child {
+        grid-column: 1 / -1;
       }
     }
 
@@ -1258,7 +1262,7 @@
         <div class="hero-content reveal">
           <div class="hero-pill">
             <span aria-hidden="true">🔥</span>
-            <span>Open Standard SKILL.md · v1.0.0</span>
+            <span>Open Standard SKILL.md · v1.4.0</span>
           </div>
 
           <h1 class="hero-title">
@@ -1359,6 +1363,8 @@
             <button type="button" class="filter-pill active" data-category="all">All Skills</button>
             <button type="button" class="filter-pill" data-category="Architecture">📐 Architecture</button>
             <button type="button" class="filter-pill" data-category="Plan Mode">🧪 Plan Mode</button>
+            <button type="button" class="filter-pill" data-category="Jira & Agile">🎫 Jira &amp; Agile</button>
+            <button type="button" class="filter-pill" data-category="MCP Workflow">🔌 MCP Workflow</button>
           </div>
         </div>
 
@@ -1572,6 +1578,89 @@ Deliver the response structured into these exact sections:
 - **Avoid over-abstraction on trivial CRUD:** Still separate \`domain\`, \`application\`, and \`infrastructure\` cleanly, but keep pass-through use cases concise rather than inventing artificial domain complexity.
 - **Match legacy quirks:** If an existing endpoint returns a non-standard status code or error field name, document it in Phase 1 and preserve it in the \`infrastructure\` error mapper so existing clients do not break.`;
 
+    const JIRA_TICKET_CREATOR_SKILL_MD = `---
+name: jira-ticket-creator
+description: Creates well-structured Jira tickets (defaulting to Story) via the Atlassian MCP server. Gathers codebase/technical context, enforces repository naming conventions, separates Acceptance Criteria from DoD, and generates all ticket content in Spanish.
+---
+
+# Jira Ticket Creator
+
+You are an expert technical product assistant responsible for drafting and creating high-quality Jira issues using the Atlassian MCP tools.
+
+## 1. Input Parameters
+
+When invoked, identify the following parameters from the user's request (ask for missing required parameters before proceeding):
+
+- **\`project\` (Required):** The Jira Project Name or Project Key where the ticket will be created.
+- **\`board\` (Optional):** The Jira Board Name. *Note: In Jira, issues belong to a Project, not directly to a Board. Use the board parameter solely to look up active/upcoming sprints, board filters (labels/components), and assign them accordingly.*
+- **\`issue_type\` (Optional):** Defaults to **Story** (or its localized equivalent, e.g., \`Historia\`) unless the user explicitly specifies another type (e.g., \`Bug\`, \`Task\`, \`Spike\`).
+
+---
+
+## 2. Execution Workflow
+
+Follow these steps strictly in order:
+
+### Step 1: Metadata & Board Discovery (Atlassian MCP)
+Before drafting or creating any ticket, inspect the target Jira instance via the Atlassian MCP tools:
+1. Resolve the exact \`projectKey\` from the provided \`project\` parameter.
+2. Fetch available issue types for that project to confirm the exact name/ID for **Story** (e.g., \`Story\` vs. \`Historia\`) or the user-requested type, as well as any mandatory custom fields.
+3. If \`board\` is provided, search for the board to identify its active/next sprint or JQL filter criteria (such as required \`labels\` or \`components\`) so the created issue appears on that board.
+
+### Step 2: Active Technical Context Gathering
+Do not write generic technical notes. Before drafting the ticket:
+1. Inspect the local codebase/workspace (and search Confluence/Jira via MCP if needed) to verify how the feature or change is currently implemented.
+2. Identify **which repositories** are impacted (single repo vs. multiple repos).
+3. Uncover concrete technical details (e.g., if a wording change is requested, check whether the string is hardcoded in the frontend, stored in a database table, managed via a CMS, or loaded from environment variables).
+
+### Step 3: Ticket Title & Multi-Repo Rules
+Apply the following naming convention strictly:
+- **Single Repository:** Prefix the descriptive title with the repository name in square brackets:
+  - Format: \`[repo-name] <Representative title>\`
+  - Example: \`[users-ms] Agregar validación de edad mínima en registro\`
+- **Multiple Repositories:** Do **NOT** use any bracketed prefix. Use a clean, descriptive title covering the cross-service capability:
+  - Example: \`Implementar validación de edad mínima en flujo de registro\`
+  - *Multi-repo follow-up:* When multiple repositories are affected, note this and offer to automatically create linked child Sub-tasks—one per \`[repo-name]\`—once the parent ticket is confirmed.
+
+### Step 4: Language & Content Structure (MANDATORY SPANISH)
+- **Language Rule:** Regardless of the language used in the user's prompt or the ticket type (\`Story\`, \`Bug\`, \`Task\`, etc.), **100% of the generated Jira ticket (Summary/Title, Description, Technical Notes, Acceptance Criteria, and DoD) MUST be written in clear, natural Spanish.** Keep code identifiers, repository names, endpoints, database tables, and standard stack terms in their original technical form.
+- Format the Jira issue description using the following four sections:
+
+#### Ticket Template (Output in Spanish)
+
+\`\`\`markdown
+### Descripción
+<Breve explicación de qué se necesita construir o modificar y el porqué (valor de negocio o problema que resuelve).>
+
+### Nota Técnica
+<Detalles concretos de implementación descubiertos en el análisis: repositorios afectados, endpoints, tablas de base de datos, variables de entorno, aclaraciones sobre origen de datos/wordings o dependencias técnicas a tener en cuenta.>
+
+### Criterios de Aceptación (AC)
+- <Condición funcional específica y verificable 1>
+- <Condición funcional específica y verificable 2>
+
+### Definition of Done (DoD)
+- <Entregable técnico ajustado al alcance del ticket, ej. Tests unitarios y de integración pasando>
+- <Revisión de código (PR) aprobada y mergeada>
+- <Despliegue y validación en ambiente de QA/Testing (y actualización de datos/scripts si aplica)>
+\`\`\`
+
+### Step 5: Confirmation Gate (Dry-Run)
+Unless the user explicitly instructs you to create the ticket immediately without confirmation:
+1. Present a clean Markdown preview of the ticket to the user showing:
+   - **Proyecto:** \`<Project Name (KEY)>\`
+   - **Tipo:** \`<Issue Type>\`
+   - **Sprint / Labels / Componentes:** \`<Resolved from board, if applicable>\`
+   - **Título:** \`<Formatted Title>\`
+   - **Cuerpo del Ticket:** \`<Descripción, Nota Técnica, AC, DoD>\`
+2. Ask the user for confirmation to create the ticket in Jira (and, if multi-repo, ask if they also want the per-repo child sub-tasks created).
+
+### Step 6: Creation & Output
+Once confirmed:
+1. Call the Atlassian MCP issue creation tool with the resolved metadata and formatted content.
+2. If the user opted in for multi-repo sub-tasks, create each \`[repo-name]\` sub-task linked to the newly created parent issue.
+3. Return the created Jira Issue Key(s) and direct URL(s) to the user.`;
+
     // =========================================================================
     // 2. SKILLS_DATA ARRAY (Add future SKILL.md entries here)
     // =========================================================================
@@ -1596,6 +1685,27 @@ Deliver the response structured into these exact sections:
         ],
         fileName: 'SKILL.md',
         markdown: TO_HEXAGONAL_SKILL_MD
+      },
+      {
+        id: 'jira-ticket-creator',
+        name: 'jira-ticket-creator',
+        version: 'v1.4.0',
+        categories: ['Jira & Agile', 'MCP Workflow', 'Plan Mode'],
+        badges: [
+          { emoji: '🎫', label: 'Jira & Agile' },
+          { emoji: '🔌', label: 'Atlassian MCP' },
+          { emoji: '🇪🇸', label: 'Spanish Output' }
+        ],
+        description:
+          'Creates well-structured Jira tickets (defaulting to Story) via the Atlassian MCP server. Gathers codebase/technical context, enforces repository naming conventions, separates Acceptance Criteria from DoD, and generates all ticket content in Spanish.',
+        highlights: [
+          'Atlassian MCP metadata & board discovery — resolves project keys, localized issue types, active sprints, and JQL board filters.',
+          'Active technical context gathering — inspects the local codebase and Confluence/Jira before drafting concrete Technical Notes.',
+          'Strict single-repo ([repo-name] prefix) vs. multi-repo naming conventions with optional child sub-task creation.',
+          'Dry-run confirmation gate and 100% natural Spanish template separating Descripción, Nota Técnica, Criterios de Aceptación (AC), and DoD.'
+        ],
+        fileName: 'SKILL.md',
+        markdown: JIRA_TICKET_CREATOR_SKILL_MD
       }
     ];
 
@@ -1609,11 +1719,11 @@ Deliver the response structured into these exact sections:
         renderedHtml: '<span class="cmd-prompt">$ </span>npx skills add gabrandalisse/skills'
       },
       claude: {
-        hint: 'Registers the marketplace and installs the plugin directly inside Claude Code.',
+        hint: 'Registers the marketplace and installs the skills directly inside Claude Code.',
         rawCommand:
-          '/plugin marketplace add gabrandalisse/skills\n/plugin install to-hexagonal-architecture@gabrandalisse-skills',
+          '/plugin marketplace add gabrandalisse/skills\n/plugin install to-hexagonal-architecture@gabrandalisse-skills\n/plugin install jira-ticket-creator@gabrandalisse-skills',
         renderedHtml:
-          '<span class="cmd-prompt">&gt; </span>/plugin marketplace add gabrandalisse/skills\n<span class="cmd-prompt">&gt; </span>/plugin install to-hexagonal-architecture@gabrandalisse-skills'
+          '<span class="cmd-prompt">&gt; </span>/plugin marketplace add gabrandalisse/skills\n<span class="cmd-prompt">&gt; </span>/plugin install to-hexagonal-architecture@gabrandalisse-skills\n<span class="cmd-prompt">&gt; </span>/plugin install jira-ticket-creator@gabrandalisse-skills'
       },
       codex: {
         hint: 'Adds the Codex marketplace and installs the skill bundle for Codex CLI & ChatGPT Desktop.',
@@ -1623,11 +1733,11 @@ Deliver the response structured into these exact sections:
           '<span class="cmd-prompt">$ </span>codex plugin marketplace add gabrandalisse/skills\n<span class="cmd-prompt">$ </span>codex plugin add gabrandalisse-skills@gabrandalisse-skills'
       },
       gemini: {
-        hint: 'Installs the standalone skill directly from GitHub into Gemini CLI.',
+        hint: 'Installs the standalone skills directly from GitHub into Gemini CLI.',
         rawCommand:
-          'gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture',
+          'gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture\ngemini skills install https://github.com/gabrandalisse/skills.git --path skills/jira-ticket-creator',
         renderedHtml:
-          '<span class="cmd-prompt">$ </span>gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture'
+          '<span class="cmd-prompt">$ </span>gemini skills install https://github.com/gabrandalisse/skills.git --path skills/to-hexagonal-architecture\n<span class="cmd-prompt">$ </span>gemini skills install https://github.com/gabrandalisse/skills.git --path skills/jira-ticket-creator'
       }
     };
 
@@ -1659,7 +1769,7 @@ Deliver the response structured into these exact sections:
           {
             name: 'gabrandalisse-skills',
             owner: {
-              name: 'Gabriel Brandalisse'
+              name: 'Gabriel Andres Brandalisse'
             },
             plugins: [
               {
@@ -1667,6 +1777,12 @@ Deliver the response structured into these exact sections:
                 source: './skills/to-hexagonal-architecture',
                 description:
                   'Analyze an existing codebase in any language or framework and produce a phased, zero-breaking-change refactoring plan to migrate it to Hexagonal Architecture (Ports and Adapters).'
+              },
+              {
+                name: 'jira-ticket-creator',
+                source: './skills/jira-ticket-creator',
+                description:
+                  'Creates well-structured Jira tickets (defaulting to Story) via the Atlassian MCP server. Gathers codebase/technical context, enforces repository naming conventions, separates Acceptance Criteria from DoD, and generates all ticket content in Spanish.'
               }
             ]
           },
@@ -1680,10 +1796,10 @@ Deliver the response structured into these exact sections:
         content: JSON.stringify(
           {
             name: 'gabrandalisse-skills',
-            version: '1.0.0',
+            version: '1.4.0',
             description: 'Reusable AI agent skills for software architecture and engineering workflows.',
             author: {
-              name: 'Gabriel Brandalisse'
+              name: 'Gabriel Andres Brandalisse'
             },
             repository: 'https://github.com/gabrandalisse/skills'
           },
@@ -1697,7 +1813,7 @@ Deliver the response structured into these exact sections:
         content: JSON.stringify(
           {
             name: 'gabrandalisse-skills',
-            version: '1.0.0',
+            version: '1.4.0',
             description: 'Reusable AI agent skills for software architecture and engineering workflows.'
           },
           null,
@@ -1706,23 +1822,38 @@ Deliver the response structured into these exact sections:
       },
       {
         path: 'CHANGELOG.md',
-        purpose: 'Keep-a-Changelog release history synchronized with gemini-extension.json and plugin.json.',
+        purpose: 'Release history synchronized with gemini-extension.json and plugin.json.',
         content: `# Changelog
 
-All notable changes to this repository will be documented in this file.
+## [1.4.0] - 2026-11-25
+### Added
+- \`jira-ticket-creator\`: new skill to draft and create structured Jira tickets in Spanish via the Atlassian MCP server with active codebase context discovery, single/multi-repo naming conventions, and AC/DoD separation.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions stay in sync with \`gemini-extension.json\` and \`.codex-plugin/plugin.json\`.
+## [1.3.0] - 2026-11-22
+### Changed
+- Landing page modified
+
+## [1.2.0] - 2026-11-20
+### Added
+- Landing page
+
+## [1.1.0] - 2026-11-20
+### Added
+- Codex Marketplace support for all skills
 
 ## [1.0.0] - 2026-11-20
-
 ### Added
-- \`to-hexagonal-architecture\`: initial release of the multi-stack refactoring planner for Hexagonal Architecture (Ports and Adapters) with zero-breaking-change characterization tests and strict Plan Mode.
-- Marketplace and extension manifests for Claude Code (\`.claude-plugin/marketplace.json\`), OpenAI Codex (\`.agents/plugins/marketplace.json\`, \`.codex-plugin/plugin.json\`), Gemini CLI (\`gemini-extension.json\`), and \`skills.sh\`.`
+- \`to-hexagonal-architecture\`: initial version with multi-stack support and strict plan mode.`
       },
       {
         path: 'skills/to-hexagonal-architecture/SKILL.md',
-        purpose: 'Portable open-standard SKILL.md prompt and protocol loaded by AI coding agents.',
+        purpose: 'Portable open-standard SKILL.md prompt and protocol for Hexagonal Architecture migrations.',
         content: TO_HEXAGONAL_SKILL_MD
+      },
+      {
+        path: 'skills/jira-ticket-creator/SKILL.md',
+        purpose: 'Portable open-standard SKILL.md prompt and protocol for creating Jira tickets via Atlassian MCP.',
+        content: JIRA_TICKET_CREATOR_SKILL_MD
       }
     ];
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.0] - 2026-11-25
+### Added
+- `jira-ticket-creator`: new skill to draft and create structured Jira tickets in Spanish via the Atlassian MCP server with active codebase context discovery, single/multi-repo naming conventions, and AC/DoD separation.
+
 ## [1.3.0] - 2026-11-22
 ### Changed
 - Landing page modified
